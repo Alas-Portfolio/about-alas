@@ -58,6 +58,7 @@ body {
 }
 
 .profile-section {
+    font-family: 'Montserrat', sans-serif;
     display: flex;
     align-items: center;
     background-color: #f7f7f7;
