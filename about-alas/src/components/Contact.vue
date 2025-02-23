@@ -17,38 +17,26 @@
               <p><i class="fas fa-map-marker-alt"></i> Cabuyao Laguna, B24 L20 St. Joseph 7, Brgy. Marinig, Cabuyao City Laguna</p>
             </div>
             <div class="social-media">
+              <a href="https://www.linkedin.com/in/ferrer-alastair-9bb16032b/" target="_blank" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+              <a href="https://github.com/AlastairFerrer" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+              <a href="mailto:alastair792@gmail.com" target="_blank" class="social-icon"><i class="fas fa-envelope"></i></a>
+            </div>
+          </div>
+        </div>
+  
+        <footer class="footer">
+          <div class="footer-content">
+            <p>&copy; 2025 Alastair O. Ferrer. All Rights Reserved.</p>
+            <div class="footer-social">
               <a href="https://www.linkedin.com" target="_blank" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
               <a href="https://github.com" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
               <a href="mailto:alastair@example.com" target="_blank" class="social-icon"><i class="fas fa-envelope"></i></a>
             </div>
           </div>
-        </div>
-  
-        <div class="skills-section">
-            <h3>Skills</h3>  
-            <div class="skills-list">
-              <div class="skill-item">HTML5</div>
-              <div class="skill-item">CSS3</div>
-              <div class="skill-item">JavaScript</div>
-              <div class="skill-item">Vue.js</div>
-              <div class="skill-item">React</div>
-              <div class="skill-item">Laravel</div>
-              <div class="skill-item">jQuery</div>
-            </div>
-        </div>
+        </footer>
       </div>
     </div>
   
-    <footer class="footer">
-      <div class="footer-content">
-        <p>&copy; 2025 Alastair O. Ferrer. All Rights Reserved.</p>
-        <div class="footer-social">
-          <a href="https://www.linkedin.com" target="_blank" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
-          <a href="https://github.com" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
-          <a href="mailto:alastair@example.com" target="_blank" class="social-icon"><i class="fas fa-envelope"></i></a>
-        </div>
-      </div>
-    </footer>
   </template>
   
   <script>
@@ -59,7 +47,7 @@
   
   <style scoped>
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-  
+
   body {
       transition: background-color 0.3s ease;
       font-family: 'Montserrat', sans-serif;
@@ -159,41 +147,6 @@
       margin-right: 10px;
   }
   
-  .skills-section h3 {
-      font-family: 'Montserrat', sans-serif;
-      text-align: center;
-      font-size: 22px;
-      font-weight: bold;
-      margin-bottom: 15px;
-      color: white;
-  }
-  
-  .skills-list {
-      margin-top: 50vh;
-      font-family: 'Montserrat', sans-serif;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 15px;
-  }
-  
-  .skill-item {
-      animation: slideIn 1s ease-in-out, fadeIn 1s ease-in-out;
-      background-color: #9b0d54;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 20px;
-      margin: 5px;
-      font-size: 14px;
-      font-weight: bold;
-      transition: transform 0.3s ease, background-color 0.3s ease;
-  }
-  
-  .skill-item:hover {
-      transform: scale(1.1) rotate(10deg);
-      background-color: #700a3d;
-  }
-  
   .social-media {
       display: flex;
       gap: 15px;
@@ -216,11 +169,13 @@
       background-color: #333;
       color: #fff;
       padding: 20px 0;
-      position: fixed;
+      position: absolute;
+      top: 25rem;
       bottom: 0;
       left: 0;
+      right: 0;
+      height: 100%;
       width: 100%;
-      text-align: center;
   }
   
   .footer-content { 
@@ -253,6 +208,9 @@
   
   @media (max-width: 768px) {
       .profile-section {
+          position: absolute;
+          left: -10px;
+          right: 0;
           flex-direction: column;
           text-align: center;
       }
@@ -266,10 +224,14 @@
           margin-top: 20px;
       }
   
-      .skills-list {
-          justify-content: center;
+      .footer {
+        position: relative;
+        top: 35.8rem;
+        left: -10px;
+        right: 0;
+        bottom: 0;
+        text-align: center;
       }
-  
       .footer-content {
           flex-direction: column;
       }

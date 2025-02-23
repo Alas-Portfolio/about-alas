@@ -29,6 +29,7 @@ export default {
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css");
 
 .home-container {
+
     margin-top: 200px;
 }
 .home-container h1{
@@ -37,11 +38,13 @@ export default {
     font-family: 'Bodoni Moda', 'Playfair Display', serif;
 }
 
-.home-container h2{
+.home-container h2 {
     font-family: 'Montserrat', sans-serif;
-    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
 }
 
+.home-container h2:nth-child(2){
+    animation: typing 2s steps(20), blink-caret 2s step-end infinite;
+}
 .overlay h1 {
     font-size: 50px;
     font-family: 'Bodoni Moda', 'Playfair Display', serif;
@@ -160,18 +163,19 @@ export default {
         width: 0;
     }
     to {
-        width: 100%;
+        width: 50%;
     }
 }
 
 .typing {
+    display: inline-block;
     overflow: hidden;
     white-space: nowrap;
-    border-right: 0.15em solid   #ddd;;
-    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+    border-right: 0.15em solid   #ddd;
+    animation: typing steps(20);
 }
 
-@keyframes blink-caret {
+@keyframes blink-caret{
     from, to {
         border-color: transparent;
     }

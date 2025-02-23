@@ -29,9 +29,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Playfair+Display:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
+  
+*{
+    margin: 0;
+    padding: 0;
+  }
+  
 .hero{
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   background: linear-gradient(rgba(0, 0, 0, 0.942) , rgba(0, 0, 0, 0.942)), url('./images/computer-background-image.jpg') no-repeat center center/cover;
   background-size: cover;
   display: flex;
@@ -39,8 +45,8 @@
   justify-content: center;
   position: fixed;
   top: 0;
-  /* left: 0; */
-  right: 0;
+  left: 0;
+  right: 0; 
   transition: background 0.5s ease;  
 
 }
