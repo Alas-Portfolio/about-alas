@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  name: 'About',
+  name: 'AboutPage',
   data() {
     return {
       activeIndex: 0,
@@ -64,7 +64,7 @@ export default {
   mounted() {
     this.startCarousel();
   },
-  beforeDestroy() {
+  beforeUnmount() {
     clearInterval(this.intervalId); // Clean up interval when component is destroyed
   },
   methods: {

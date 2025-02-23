@@ -3,9 +3,9 @@
   <div class="container">
     <nav class="navbar">
       <div class="nav-links">
-        <router-link to="/home">Home</router-link>
-        <router-link to="/about">About</router-link>
-        <router-link to="/contact">Contact</router-link>
+        <router-link to="/Home">Home</router-link>
+        <router-link to="/About">About</router-link>
+        <router-link to="/Contact">Contact</router-link>
         <router-view/>
       </div>
     </nav>
@@ -16,14 +16,6 @@
   </div>
 </template>
 
-<script>
- import Home from './components/Home.vue';
- export default{
-  components: {
-    Home
-  }
- }
-</script>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Playfair+Display:wght@700&display=swap');
