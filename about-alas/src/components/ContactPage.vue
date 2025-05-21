@@ -217,8 +217,6 @@ body {
   }
 
   .footer {
-    position: relative;
-    
     margin-top: 40px;
   }
 

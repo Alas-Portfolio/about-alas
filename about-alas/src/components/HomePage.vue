@@ -46,7 +46,7 @@ export default {
 }
 
 .home-container h2:nth-child(2){
-    animation: typing 2s steps(18), blink-caret 2s step-end infinite;
+    animation: typing 2s steps(20), blink-caret 2s step-end infinite;
 }
 .overlay h1 {
     font-size: 50px;
@@ -168,7 +168,7 @@ export default {
         width: 0;
     }
     to {
-        width: 15%;
+        width: 14ch;
     }
 }
 
@@ -177,15 +177,14 @@ export default {
     overflow: hidden;
     white-space: nowrap;
     border-right: 0.15em solid   #ddd;
-    animation: typing steps(18);
 }
 
 @keyframes blink-caret{
     from, to {
         border-color: transparent;
     }
-    20% {
-        border-color:  #ddd;;
+    50% {
+        border-color:  #ddd;
     }
 }
 

@@ -85,7 +85,7 @@ export default {
          {
           title: 'Figma',
           description: 'Designed and developed user-friendly interfaces that enhance user experience and engagement.',
-          imgSrc: require('../images/jQuery.png'),
+          imgSrc: require('../images/figma.jpg'),
         },
       ],
       projects: [
@@ -112,7 +112,7 @@ export default {
           description: 'This is our for our internship. With the power of Figma, we create a high-fidelity design and raw interactivity, Click the play button for better user-experience.',
           img: require('../images/matcha-ka.png'),
           url: 'https://www.figma.com/proto/uevfKzT76hKgfQQu1FzGjW/FERRER---WEB-DESIGN--PROJECT-1-?t=EEAqDcvHkc1GTbR3-0&scaling=scale-down-width&content-scaling=fixed&page-id=0%3A1&node-id=26-326'
-        }
+        },
       ],
       intervalId: null,
     };
