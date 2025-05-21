@@ -1,5 +1,4 @@
 <template>
-  
   <div class="container">
     <nav class="navbar">
       <div class="nav-links">
@@ -10,12 +9,9 @@
       </div>
     </nav>
     <section class="hero">
-    
     </section>
-    
   </div>
 </template>
-
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Playfair+Display:wght@700&display=swap');
@@ -25,6 +21,8 @@
 *{
     margin: 0;
     padding: 0;
+    height: 100%;
+    width: 100%;
   }
   
 .hero{
@@ -69,10 +67,9 @@
 }
 
 .nav-links a:hover {
-  background-color: rgba(0, 0, 0, 0.5);
+  color: #eb1882;
   transform: scale(1.1);
 }
-
 
 
 .overlay {

@@ -3,21 +3,21 @@
         <div class="home-container">
             <h1 class="fade-in">I'M</h1>
             <h2 class="fade-in typing ">Alastair O. Ferrer</h2>
-            <h2 class="fade-in">WEB DESIGNER AND DEVELOPER</h2>
+            <h3 class="fade-in">WEB DESIGNER AND DEVELOPER</h3>
             <div class="buttons">
-                <button class="btn fade-in" @click="clickLearnMore">Learn More</button>
-                <button class="btn fade-in">Hire Me</button>
+                <button class="btn fade-in" @click="clickResume">View Resume</button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+
 export default {
     name: 'HomePage',
     methods:{
-        clickLearnMore(){
-            this.$router.push("/About")
+        clickResume() {
+         window.open('/pdf/CV.pdf', '_blank');
         }
     }
 }
@@ -29,7 +29,6 @@ export default {
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css");
 
 .home-container {
-
     margin-top: 200px;
 }
 .home-container h1{
@@ -38,12 +37,16 @@ export default {
     font-family: 'Bodoni Moda', 'Playfair Display', serif;
 }
 
-.home-container h2 {
+.home-container h2, .home-container h3  {
     font-family: 'Montserrat', sans-serif;
 }
 
+.home-container h2{
+    font-size: 30px;
+}
+
 .home-container h2:nth-child(2){
-    animation: typing 2s steps(20), blink-caret 2s step-end infinite;
+    animation: typing 2s steps(18), blink-caret 2s step-end infinite;
 }
 .overlay h1 {
     font-size: 50px;
@@ -68,6 +71,8 @@ export default {
     animation: fadeIn 1s ease-in-out;
 }
 .buttons .btn:hover {
+    transform: translateY(-3px);
+    transition: .2s ease-in-out;
     background: #580730;
 }
 
@@ -163,7 +168,7 @@ export default {
         width: 0;
     }
     to {
-        width: 50%;
+        width: 15%;
     }
 }
 
@@ -172,14 +177,14 @@ export default {
     overflow: hidden;
     white-space: nowrap;
     border-right: 0.15em solid   #ddd;
-    animation: typing steps(20);
+    animation: typing steps(18);
 }
 
 @keyframes blink-caret{
     from, to {
         border-color: transparent;
     }
-    50% {
+    20% {
         border-color:  #ddd;;
     }
 }
