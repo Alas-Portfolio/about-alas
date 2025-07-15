@@ -17,7 +17,7 @@ export default {
     name: 'HomePage',
     methods:{
         clickResume() {
-         window.open('/pdf/CV.pdf', '_blank');
+         window.open('/pdf/CV-FERRER,ALASTAIR.pdf', '_blank');
         }
     }
 }
