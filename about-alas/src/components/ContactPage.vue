@@ -14,8 +14,8 @@
             Always striving to improve his skills and collaborate with others to deliver high-quality products.
           </p>
           <div class="contact-info">
-            <p><i class="fas fa-phone"></i> +63 935 609 4847</p>
-            <p><i class="fas fa-map-marker-alt"></i> Cabuyao Laguna, B24 L20 St. Joseph 7, Brgy. Marinig, Cabuyao City Laguna</p>
+            <p><i class="fas fa-phone"></i> 0935 609 4847</p>
+            <p><i class="fas fa-map-marker-alt"></i> Cabuyao Laguna</p>
           </div>
           <div class="social-media">
             <a href="https://www.linkedin.com/in/ferrer-alastair-9bb16032b/" target="_blank" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
