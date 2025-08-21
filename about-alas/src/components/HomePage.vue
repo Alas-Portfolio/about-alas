@@ -23,7 +23,7 @@ export default {
         },
         clickCV(){
         // window.open('https://drive.google.com/file/d/1pbGDsx5igtYDxHMT1Q7Lxzw6pen0OZH1/view?usp=sharing', '_blank')
-        windows.open('/pdf/CV-FERRER,ALASTAIR.pdf','_blank')
+        windows.open('/pdf/CV-FERRER,ALASTAIR.pdf', '_blank')
         }
     }
 }
