@@ -18,12 +18,12 @@ export default {
     name: 'HomePage',
     methods:{
         clickResume() {
-        window.open('https://drive.google.com/file/d/19CICZRtZmcfDZFLGwYt6R7hOv8ap1tz1/view?usp=drive_link', '_blank')
-        //  window.open('/pdf/RESUME-FERRER,ALASTAIR.pdf', '_blank');
+        // window.open('https://drive.google.com/file/d/19CICZRtZmcfDZFLGwYt6R7hOv8ap1tz1/view?usp=drive_link', '_blank')
+         window.open('/pdf/RESUME-FERRER,ALASTAIR.pdf', '_blank');
         },
         clickCV(){
-        window.open('https://drive.google.com/file/d/1pbGDsx5igtYDxHMT1Q7Lxzw6pen0OZH1/view?usp=sharing', '_blank')
-        // windows.open('/pdf/CV-FERRER,ALASTAIR.pdf','_blank')
+        // window.open('https://drive.google.com/file/d/1pbGDsx5igtYDxHMT1Q7Lxzw6pen0OZH1/view?usp=sharing', '_blank')
+        windows.open('/pdf/CV-FERRER,ALASTAIR.pdf','_blank')
         }
     }
 }
