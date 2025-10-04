@@ -1,14 +1,15 @@
 <template>
-
   <div class="container">
     <div class="home-container">
       <div class="profile-section slide-in">
         <div class="profile-image">
-          <img src="../images/my-image.jpg" alt="Profile" class="img-shadow" />
+          <img src="../images/alastair.jpg" alt="Profile" class="img-shadow" />
         </div>
         <div class="profile-content">
           <h2>Alastair O. Ferrer</h2>
-          <p class="subtitle">WEB DESIGNER AND DEVELOPER</p>
+          <p class="subtitle">Bachelors of Science in Information and Technology — <strong>Batch 2025</strong></p>
+          <p class="subtitle"><strong></strong></p>
+
           <p class="description">
             Alastair is passionate about creating intuitive and beautiful user interfaces.
             Always striving to improve his skills and collaborate with others to deliver high-quality products.
@@ -27,7 +28,7 @@
     </div>
   </div>
 
-   <AppFooter/>
+  <AppFooter />
 </template>
 
 <script>
@@ -43,7 +44,13 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 
+*{
+  margin: 0;
+  padding: 0;
+  
+}
 body {
   transition: background-color 0.3s ease;
   font-family: 'Montserrat', sans-serif;
@@ -57,11 +64,14 @@ body {
   font-family: 'Montserrat', sans-serif;
   display: flex;
   align-items: center;
+  justify-content:center;
   background-color: #f7f7f7;
   padding: 40px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 80px;
   position: relative;
+  left: 0;
+  right: 0;
 }
 
 @keyframes slideIn {
@@ -99,6 +109,7 @@ body {
 .profile-content {
   display: flex;
   flex-direction: column;
+  align-items:start;
   margin-left: 40px;
   flex: 1;
 }
@@ -110,14 +121,13 @@ body {
   transition: color 0.3s ease;
 }
 
-.profile-content h2:hover {
-  color: #9b0d54;
-}
-
 .subtitle {
   font-size: 16px;
   color: #777;
-  margin-bottom: 10px;
+}
+
+.subtitle:last-child{
+    margin-bottom: 10px;
 }
 
 .description {
@@ -125,6 +135,8 @@ body {
   color: #555;
   line-height: 1.6;
   margin-bottom: 20px;
+  margin-top: 20px;
+  text-align: start;
 }
 
 .contact-info p {
@@ -132,7 +144,7 @@ body {
   color: #555;
   margin: 5px 0;
   display: flex;
-  align-items: center;
+  align-items: start;
 }
 
 .contact-info i {
@@ -161,43 +173,14 @@ body {
   font-family: 'Montserrat', sans-serif;
   background-color: #333;
   color: #fff;
-  padding: 20px 0;
-  height: 50px;
+  padding: 50px 0;
   width: 100%;
-  text-align: center;
+  align-content: center;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 1; 
-}
-
-.footer-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.footer p {
-  margin: 10px 0;
-}
-
-.footer-social {
-  margin-top: 10px;
-  display: flex;
-  gap: 15px;
-}
-
-.footer-social .social-icon {
-  font-size: 20px;
-  color: #fff;
-  transition: color 0.3s ease;
-}
-
-.footer-social .social-icon:hover {
-  transition: 0.5s ease-in-out;
-  color: #ffcc00;
+  z-index: 1;
 }
 
 @media (max-width: 768px) {
@@ -222,6 +205,15 @@ body {
 
   .footer-content {
     flex-direction: column;
+  }
+
+  @media screen and (max-height: 1060px){
+    .footer {
+      position: relative;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
   }
 }
 </style>

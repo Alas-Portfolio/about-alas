@@ -17,12 +17,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Playfair+Display:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
-  
-*{
+  *{
     margin: 0;
     padding: 0;
-    height: 100%;
-    width: 100%;
+    box-sizing: border-box;
   }
   
 .hero{
@@ -38,8 +36,8 @@
   left: 0;
   right: 0; 
   transition: background 0.5s ease;  
-
 }
+
 .container {
   font-family: Arial, sans-serif;
   text-align: center;
@@ -47,10 +45,10 @@
 }
 
 .navbar {
-  display: flex;
-  justify-content: center;
-  padding: 20px 0;
-  position: absolute;
+  padding-top: 20px;
+  position: relative;
+  top: 0;
+  left: 0;
   width: 100%;
   z-index: 1;
   transition: background-color 0.3s ease;

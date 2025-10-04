@@ -1,204 +1,187 @@
 <template>
-    <div class="container">
-        <div class="home-container">
-            <h1 class="fade-in">I'M</h1>
-            <h2 class="fade-in typing ">Alastair O. Ferrer</h2>
-            <h3 class="fade-in">WEB DESIGNER AND DEVELOPER</h3>
-            <div class="buttons">
-                <button class="btn fade-in" @click="clickResume">View Resume</button>
-                <button class="btn fade-in" @click="clickCV">View Curriculum Vitae</button>
-            </div>
-        </div>
+  <div class="container text-center mt-5">
+    <div class="home-container">
+      <div class="image-container mt-5">
+        <transition name="fade" mode="out-in">
+          <img
+            :src="images[currentTitleIndex]"
+            :key="currentTitleIndex"
+            class="slide-image"
+            alt="Profile Slide"
+          />
+        </transition>
+      </div>
+
+      <h1>I'M</h1>
+
+      <h2 class="typing">{{ displayedText }}</h2>
+
+      <div class="buttons mt-3">
+        <button class="btn btn-primary me-2" @click="clickResume">View Resume</button>
+        <button class="btn btn-secondary" @click="clickCV">View Curriculum Vitae</button>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
-
 export default {
-    name: 'HomePage',
-    methods:{
-        clickResume() {
-        /* window.open('https://drive.google.com/file/d/19CICZRtZmcfDZFLGwYt6R7hOv8ap1tz1/view?usp=drive_link', '_blank') */
-         window.open('/pdf/RESUME-FERRER,ALASTAIR.pdf', '_blank');
-        },
-        clickCV(){
-        /* window.open('https://drive.google.com/file/d/1pbGDsx5igtYDxHMT1Q7Lxzw6pen0OZH1/view?usp=sharing', '_blank') */
-        window.open('/pdf/CV-FERRER,ALASTAIR.pdf', '_blank')
-        }
+  name: 'HomePage',
+  data() {
+    return {
+      titles: ['Alastair O. Ferrer', 'Web Designer', 'IT Support'],
+      images: [
+        '../picture.jpg',
+        '../webDesign.jpg',
+        '../ITSupport.png',
+        '../image4.jpg'
+      ],
+      currentTitleIndex: 0,
+      displayedText: '',
+      typingSpeed: 100,
+      deletingSpeed: 50,
+      isDeleting: false
+    };
+  },
+  mounted() {
+    this.startTyping();
+  },
+  methods: {
+    clickResume() {
+      window.open('/pdf/RESUME-FERRER,ALASTAIR.pdf', '_blank');
+    },
+    clickCV() {
+      window.open('/pdf/CV-FERRER,ALASTAIR.pdf', '_blank');
+    },
+    startTyping() {
+      const current = this.titles[this.currentTitleIndex];
+      const fullText = current;
+
+      if (this.isDeleting) {
+        this.displayedText = fullText.substring(0, this.displayedText.length - 1);
+      } else {
+        this.displayedText = fullText.substring(0, this.displayedText.length + 1);
+      }
+
+      let typeSpeed = this.isDeleting ? this.deletingSpeed : this.typingSpeed;
+
+      if (!this.isDeleting && this.displayedText === fullText) {
+        typeSpeed = 1500;
+        this.isDeleting = true;
+      } else if (this.isDeleting && this.displayedText === '') {
+        this.isDeleting = false;
+        this.currentTitleIndex = (this.currentTitleIndex + 1) % this.titles.length;
+        typeSpeed = 500;
+      } 
+
+      setTimeout(this.startTyping, typeSpeed);
     }
-}
+  }
+};
 </script>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Playfair+Display:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css");
 
 .home-container {
-    margin-top: 200px;
-}
-.home-container h1{
-    font-size: 100px;
-    font-weight: bolder;
-    font-family: 'Bodoni Moda', 'Playfair Display', serif;
+  margin-top: 150px;
 }
 
-.home-container h2, .home-container h3  {
-    font-family: 'Montserrat', sans-serif;
+h1 {
+  font-family: 'Bodoni Moda', serif;
+  font-weight: 700;
 }
 
-.home-container h2{
-    font-size: 30px;
+h2,
+h3 {
+  font-family: 'Montserrat', sans-serif;
 }
 
-.home-container h2:nth-child(2){
-    animation: typing 2s steps(20), blink-caret 2s step-end infinite;
-}
-.overlay h1 {
-    font-size: 50px;
-    font-family: 'Bodoni Moda', 'Playfair Display', serif;
-    font-weight: bold;
-}
-
-.overlay h2 {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 100;
-}
-
-.buttons .btn {
-    font-family: 'Montserrat', sans-serif;
-    margin: 10px;
-    padding: 10px 20px;
-    background: #9b0d54;
-    border: none;
-    color: white;
-    cursor: pointer;
-    border-radius: 20px;
-    animation: fadeIn 1s ease-in-out;
-}
-.buttons .btn:hover {
-    transform: translateY(-3px);
-    transition: .2s ease-in-out;
-    background: #580730;
-}
-
-.profile-section {
-    display: flex;
-    align-items: center;
-    background-color: #2a2a2a;
-    padding: 40px;
-    max-width: 800px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    animation: slideIn 1s ease-in-out;
-}
-
-.profile-image img {
-    width: 200px;
-    height: auto;
-    border-radius: 8px;
-}
-
-.profile-content {
-    margin-left: 30px;
-    flex: 1;
-}
-
-.profile-content h2 {
-    font-size: 22px;
-    font-weight: bold;
-    margin: 0;
-}
-
-.subtitle {
-    font-size: 14px;
-    color: #bbb;
-    margin-bottom: 15px;
-}
-
-.description {
-    font-size: 14px;
-    line-height: 1.5;
-    color: #ddd;
-    margin-bottom: 20px;
-}
-
-.contact-info p {
-    font-size: 14px;
-    margin: 5px 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.contact-info i {
-    color: #ffcc00;
-}
-
-@media (max-width: 768px) {
-    .profile-section {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .profile-image img {
-        width: 150px;
-    }
-
-    .profile-content {
-        margin-left: 0;
-        margin-top: 20px;
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateX(-100%);
-    }
-    to {
-        transform: translateX(0);
-    }
-}
-
-@keyframes typing {
-    from {
-        width: 0;
-    }
-    to {
-        width: 14ch;
-    }
+.static-title {
+  opacity: 1;
+  animation: none;
 }
 
 .typing {
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
-    border-right: 0.15em solid   #ddd;
+  border-right: 2px solid #333;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+  font-size: 30px;
+  min-height: 40px;
+  animation: none;
 }
 
-@keyframes blink-caret{
-    from, to {
-        border-color: transparent;
-    }
-    50% {
-        border-color:  #ddd;
-    }
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
 }
 
-.fade-in {
-    animation: fadeIn 1s ease-in-out;
+.btn {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+  border: none;
 }
 
-.slide-in {
-    animation: slideIn 1s ease-in-out;
+.btn-primary {
+  background-color: #9b0d54;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #9b0d54;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(165, 4, 71, 0.3);
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+.image-container {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+}
+
+.slide-image {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.slide-image:hover {
+  transform: scale(1.05);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.display-1-empty{
+  display: none;
 }
 </style>
