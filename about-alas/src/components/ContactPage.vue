@@ -8,7 +8,6 @@
         <div class="profile-content">
           <h2>Alastair O. Ferrer</h2>
           <p class="subtitle">Bachelors of Science in Information and Technology — <strong>Batch 2025</strong></p>
-          <p class="subtitle"><strong></strong></p>
 
           <p class="description">
             Alastair is passionate about creating intuitive and beautiful user interfaces.
@@ -28,7 +27,7 @@
     </div>
   </div>
 
-  <AppFooter />
+  <AppFooter/>
 </template>
 
 <script>
@@ -173,7 +172,7 @@ body {
   font-family: 'Montserrat', sans-serif;
   background-color: #333;
   color: #fff;
-  padding: 50px 0;
+  padding: 20px 0;
   width: 100%;
   align-content: center;
   position: fixed;
@@ -183,7 +182,7 @@ body {
   z-index: 1;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .profile-section {
     flex-direction: column;
     text-align: center;
@@ -195,6 +194,7 @@ body {
   }
 
   .profile-content {
+    align-items: center;
     margin-left: 0;
     margin-top: 20px;
   }
@@ -207,7 +207,8 @@ body {
     flex-direction: column;
   }
 
-  @media screen and (max-height: 1060px){
+}
+  @media (max-width: 768px){
     .footer {
       position: relative;
       bottom: 0;
@@ -215,5 +216,4 @@ body {
       right: 0;
     }
   }
-}
 </style>
