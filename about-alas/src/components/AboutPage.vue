@@ -96,20 +96,26 @@ export default {
           url: 'https://faculty-submittals.onrender.com'
         },
         {
+          title: 'Barangay Resident Master List',
+          description: 'This is a commission. With the power of React + Bootstrap, providing a front-end interacte/reactive, Visit this site. for better user-experience.',
+          img: require('../images/barangayresidentmasterlist.png'),
+          url: 'https://barangayresidentmasterlist.onrender.com/'
+        },
+        {
           title: 'FrameCraters',
-          description: 'This is our for our internship. With the power of Figma, we create a high-fidelity design and raw interactivity, Click the play button for better user-experience.',
+          description: 'This is our for our internship. With the power of Figma, Implementing a high-fidelity design and raw interactivity, Visit this project, for better user-experience.',
           img: require('../images/framecraters.png'),
           url: 'https://www.figma.com/proto/ff1AAkN5jQ01AOXu3KiPrt/FERRER---Task-5--Creating-a-Full-Website-UI--Multi-Page-?t=3GkY9qjfaHXoEH6x-1&node-id=183-814'
         },
         {
           title: 'Krezil Food Stall',
-          description: "This is commission, for my sister's business",
+          description: "This is commission, for my sister's business. Visit my project—for better experience.",
           img: require('../images/KREZIL-FOOD-STALL.jpg'),
           url: 'https://www.figma.com/proto/QtPv9S2a8rMVlnodk6Aedq/KREZIL-FOOD-STALL?t=pmaQnbkWIsFLQC88-0&scaling=contain&content-scaling=fixed&page-id=0%3A1&node-id=21-220'
         },
         {
           title: 'Matcha ka',
-          description: 'This is our for our internship. With the power of Figma, we create a high-fidelity design and raw interactivity, Click the play button for better user-experience.',
+          description: 'This is our for our internship. With the power of Figma, we create a high-fidelity design and raw interactivity, Visit my project, for better user-experience.',
           img: require('../images/matcha-ka.png'),
           url: 'https://www.figma.com/proto/uevfKzT76hKgfQQu1FzGjW/FERRER---WEB-DESIGN--PROJECT-1-?t=EEAqDcvHkc1GTbR3-0&scaling=scale-down-width&content-scaling=fixed&page-id=0%3A1&node-id=26-326'
         },
