@@ -258,7 +258,7 @@ h3 {
   display: none;
 }
 
-@media (max-width: 320px) {
+@media (max-width: 720px) {
   .buttons {
     display: flex;
     flex-direction: column;
