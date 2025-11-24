@@ -16,10 +16,17 @@
 
       <h2 class="typing">{{ displayedText }}</h2>
 
+      <!-- UPDATED BUTTONS -->
       <div class="buttons mt-3">
-        <button class="btn btn-primary me-2" @click="clickResume">View Resume</button>
-        <button class="btn btn-secondary" @click="clickCV">View Curriculum Vitae</button>
+        <button class="btn enhanced-btn btn-primary ripple me-3" @click="clickResume">
+          <i class="bi bi-file-earmark-pdf me-2"></i> View Resume
+        </button>
+
+        <button class="btn enhanced-btn btn-secondary ripple" @click="clickCV">
+          <i class="bi bi-file-earmark-person me-2"></i> View Curriculum Vitae
+        </button>
       </div>
+
     </div>
   </div>
 </template>
@@ -31,7 +38,7 @@ export default {
     return {
       titles: ['Alastair O. Ferrer', 'Web Designer', 'IT Support'],
       images: [
-        '../picture.jpg',
+        '../alastair2.png',
         '../webDesign.jpg',
         '../ITSupport.png',
         '../image4.jpg'
@@ -84,6 +91,9 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Playfair+Display:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
+/* Bootstrap Icons */
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css");
+
 .home-container {
   margin-top: 150px;
 }
@@ -120,6 +130,7 @@ h3 {
   margin-top: 2rem;
 }
 
+/* BASE BUTTONS (unchanged) */
 .btn {
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
@@ -130,27 +141,89 @@ h3 {
   border: none;
 }
 
-.btn-primary {
-  background-color: #9b0d54;
-  color: white;
+
+.enhanced-btn {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  padding: 0.9rem 2.3rem !important;
+  font-size: 1.15rem !important;
+  border-radius: 45px !important;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  transition: all 0.3s ease;
 }
 
-.btn-primary:hover {
-  background-color: #9b0d54;
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(165, 4, 71, 0.3);
+
+.btn-primary {
+  background: linear-gradient(135deg, #9b0d54, #c0196d, #9b0d54);
+  background-size: 250% 250%;
+  color: #fff;
+  animation: gradientFlow 6s ease infinite;
 }
 
 .btn-secondary {
-  background-color: #6c757d;
-  color: white;
+  background: linear-gradient(135deg, #6c757d, #868e96, #6c757d);
+  background-size: 250% 250%;
+  color: #fff;
+  animation: gradientFlow 6s ease infinite;
 }
 
-.btn-secondary:hover {
-  background-color: #5a6268;
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
+
+ .enhanced-btn:hover {
+  transition: all 0.3s ease;
+  transform: translateY(-5px) scale(1.06);
+} 
+
+.enhanced-btn:hover {
+  background: radial-gradient(circle, rgba(248, 248, 248, 0.6), transparent 70%);
+}
+
+
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple:active::before {
+  content: "";
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 50%;
+  transform: scale(0);
+  animation: rippleAnim 0.6s ease-out;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+@keyframes rippleAnim {
+  to {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+/* Press-down animation */
+.enhanced-btn:active {
+  transform: translateY(0px) scale(0.97);
+}
+
+/* Icon styling */
+.enhanced-btn i {
+  font-size: 1.3rem;
+}
+
+/* ------------------------------------------------------- */
 
 .image-container {
   margin-top: 3rem;
@@ -183,5 +256,12 @@ h3 {
 
 .display-1-empty{
   display: none;
+}
+
+@media (max-width: 320px) {
+  .buttons {
+    display: flex;
+    flex-direction: column;
+  }
 }
 </style>
