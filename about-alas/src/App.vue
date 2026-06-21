@@ -8,25 +8,90 @@
         <router-view/>
       </div>
     </nav>
-    <section class="hero">
+
+    <section class="hero finisher-header">
     </section>
   </div>
 </template>
+
+<script setup>
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  const initFinisher = () => {
+    if (window.FinisherHeader) {
+      new window.FinisherHeader({
+        count: 90,
+        size: {
+          min: 1,
+          max: 20,
+          pulse: 0
+        },
+        speed: {
+          x: {
+            min: 0,
+            max: 0.4
+          },
+          y: {
+            min: 0,
+            max: 0.1
+          }
+        },
+        colors: {
+          background: '#000000',
+          particles: [
+            '#ffffff',
+            '#87ddfe',
+            '#acaaff',
+            '#1bffc2',
+            '#f88aff'
+          ]
+        },
+        blending: 'screen',
+        opacity: {
+          center: 0,
+          edge: 0.4
+        },
+        skew: -2,
+        shapes: [
+          'c',
+          's',
+          't'
+        ]
+      })
+    }
+  }
+
+  if (window.FinisherHeader) {
+    initFinisher()
+  } else {
+    const script = document.createElement('script')
+    script.src =
+      'https://finisher.co/lab/header/assets/finisher-header.es5.min.js'
+
+    script.onload = () => {
+      initFinisher()
+    }
+
+    document.head.appendChild(script)
+  }
+})
+</script>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Playfair+Display:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
-  *{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .hero{
   height: 100%;
   width: 100%;
-  background: linear-gradient(rgba(0, 0, 0, 0.942) , rgba(0, 0, 0, 0.942)), url('./images/computer-background-image.jpg') no-repeat center center/cover;
+  /* background: linear-gradient(rgba(0, 0, 0, 0.942) , rgba(0, 0, 0, 0.942)), url('./images/computer-background-image.jpg') no-repeat center center/cover; */
   background-size: cover;
   display: flex;
   align-items: center;
@@ -34,8 +99,8 @@
   position: fixed;
   top: 0;
   left: 0;
-  right: 0; 
-  transition: background 0.5s ease;  
+  right: 0;
+  transition: background 0.5s ease;
 }
 
 .container {
@@ -68,7 +133,6 @@
   color: #eb1882;
   transform: scale(1.1);
 }
-
 
 .overlay {
   text-align: center;
