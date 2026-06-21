@@ -17,6 +17,7 @@
 <script setup>
 import { onMounted } from 'vue'
 
+
 onMounted(() => {
   const initFinisher = () => {
     if (window.FinisherHeader) {
