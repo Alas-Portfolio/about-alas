@@ -12,9 +12,9 @@
         </transition>
       </div>
 
-      <h1>I'M</h1>
+     <h1>{{ headingTexts[currentTitleIndex] }}</h1>
 
-      <h2 class="typing">{{ displayedText }}</h2>
+    <h2 class="typing">{{ displayedText }}</h2>
 
       <!-- UPDATED BUTTONS -->
       <div class="buttons mt-3">
@@ -36,13 +36,30 @@ export default {
   name: 'HomePage',
   data() {
     return {
-      titles: ['Alastair O. Ferrer', 'Web Designer', 'IT Support'],
+      headingTexts: [
+        "I'M",
+        "CAPABLE FOR",
+        "HAS EXPERIENCE IN",
+        "HAS EXPERIENCE IN",
+        "HAS BASIC KNOWLEDGE FOR"
+      ],
+
+      titles: [
+        'Alastair O. Ferrer',
+        'Web Design',
+        'Graphic Design',
+        'Social Media Boosting, Monetizing, Posting',
+        'Troubleshooting'
+      ],
+
       images: [
         '../alastair2.png',
         '../webDesign.jpg',
-        '../ITSupport.png',
-        '../image4.jpg'
+        '../Graphic Design.jpg',
+        '../Social Media Specialist.png',
+        '../ITSupport.png'
       ],
+
       currentTitleIndex: 0,
       displayedText: '',
       typingSpeed: 100,
@@ -50,36 +67,52 @@ export default {
       isDeleting: false
     };
   },
+
   mounted() {
     this.startTyping();
   },
+
   methods: {
     clickResume() {
       window.open('/pdf/RESUME-FERRER,ALASTAIR.pdf', '_blank');
     },
+
     clickCV() {
       window.open('/pdf/CV-FERRER,ALASTAIR.pdf', '_blank');
     },
+
     startTyping() {
       const current = this.titles[this.currentTitleIndex];
       const fullText = current;
 
       if (this.isDeleting) {
-        this.displayedText = fullText.substring(0, this.displayedText.length - 1);
+        this.displayedText = fullText.substring(
+          0,
+          this.displayedText.length - 1
+        );
       } else {
-        this.displayedText = fullText.substring(0, this.displayedText.length + 1);
+        this.displayedText = fullText.substring(
+          0,
+          this.displayedText.length + 1
+        );
       }
 
-      let typeSpeed = this.isDeleting ? this.deletingSpeed : this.typingSpeed;
+      let typeSpeed = this.isDeleting
+        ? this.deletingSpeed
+        : this.typingSpeed;
 
       if (!this.isDeleting && this.displayedText === fullText) {
-        typeSpeed = 1500;
+        typeSpeed = 1800;
         this.isDeleting = true;
       } else if (this.isDeleting && this.displayedText === '') {
         this.isDeleting = false;
-        this.currentTitleIndex = (this.currentTitleIndex + 1) % this.titles.length;
+
+        this.currentTitleIndex =
+          (this.currentTitleIndex + 1) %
+          this.titles.length;
+
         typeSpeed = 500;
-      } 
+      }
 
       setTimeout(this.startTyping, typeSpeed);
     }

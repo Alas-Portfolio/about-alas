@@ -90,7 +90,7 @@ onMounted(() => {
 }
 
 .hero{
-  height: 100%;
+  height: 200vh;
   width: 100%;
   /* background: linear-gradient(rgba(0, 0, 0, 0.942) , rgba(0, 0, 0, 0.942)), url('./images/computer-background-image.jpg') no-repeat center center/cover; */
   background-size: cover;
