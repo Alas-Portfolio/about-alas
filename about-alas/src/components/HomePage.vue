@@ -2,17 +2,25 @@
   <div class="container text-center mt-5">
     <div class="home-container">
       <div class="image-container mt-5">
-        <transition name="fade" mode="out-in">
-          <img
-            :src="images[currentTitleIndex]"
-            :key="currentTitleIndex"
-            class="slide-image"
-            alt="Profile Slide"
-          />
-        </transition>
+  <div class="glass-orb">
+    <transition name="image-switch" mode="out-in">
+      <div
+        class="glass-card"
+        :key="currentTitleIndex"
+      >
+        <img
+          :src="images[currentTitleIndex]"
+          class="slide-image"
+          alt="Profile Slide"
+        />
       </div>
+    </transition>
+  </div>
+</div>
+
 
      <h1>{{ headingTexts[currentTitleIndex] }}</h1>
+
 
     <h2 class="typing">{{ displayedText }}</h2>
 
@@ -257,40 +265,330 @@ h3 {
 }
 
 /* ------------------------------------------------------- */
-
-.image-container {
-  margin-top: 3rem;
-  display: flex;
-  justify-content: center;
+.image-container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-top:80px;
+    perspective:1200px;
 }
 
-.slide-image {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s ease;
+/* Main Orb */
+
+.glass-orb{
+    position:relative;
+    width:360px;
+    height:360px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
-.slide-image:hover {
-  transform: scale(1.05);
+.glass-orb::before{
+    content:"";
+    position:absolute;
+    inset:-6px;
+    border-radius:38px;
+
+    background:conic-gradient(
+        from 0deg,
+        transparent,
+        #9b0d54,
+        #d63384,
+        transparent
+    );
+
+    animation:rotateBorder 14s linear infinite;
+
+    filter:blur(8px);
+
+    opacity:.45;
 }
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
+@keyframes rotateBorder{
+    to{
+        transform:rotate(360deg);
+    }
+}
+/* Rotating Rings */
+
+.rotate-ring{
+    position:absolute;
+    width:390px;
+    height:390px;
+    border-radius:40px;
+
+    background:conic-gradient(
+        from 0deg,
+        transparent,
+        rgba(255,255,255,.8),
+        transparent,
+        #ff3c83,
+        transparent
+    );
+
+    animation:spin 12s linear infinite;
+
+    filter:blur(1px);
 }
 
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
+.ring2{
+    width:350px;
+    height:350px;
+
+    border-radius:60px;
+
+    animation:spinReverse 8s linear infinite;
+
+    opacity:.7;
+
+    transform:rotate(45deg);
 }
 
-.display-1-empty{
-  display: none;
+/* Glass Card */
+
+.glass-card{
+    position: relative;
+    width: 310px;
+    height: 310px;
+    border-radius: 32px;
+    overflow: hidden;
+
+    background: rgba(255,255,255,.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    border: 1px solid rgba(255,255,255,.18);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.2);
+
+    transition: all .45s ease;
 }
 
+
+/* Glass Reflection */
+
+.glass-card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        135deg,
+        rgba(255,255,255,.55),
+        transparent 45%
+    );
+    pointer-events:none;
+}
+
+.glass-card::after{
+    content:"";
+    position:absolute;
+    top:-120%;
+    left:-30%;
+    width:50%;
+    height:320%;
+    background:rgba(255,255,255,.35);
+    transform:rotate(25deg);
+    filter:blur(12px);
+
+    animation:lightSweep 6s infinite;
+}
+
+.slide-image{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+
+    border-radius:35px;
+
+    transition:.8s;
+}
+
+/* Animations */
+
+@keyframes spin{
+
+    from{
+        transform:rotate(0deg);
+    }
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+@keyframes spinReverse{
+
+    from{
+        transform:rotate(45deg);
+    }
+
+    to{
+        transform:rotate(-315deg);
+    }
+
+}
+
+@keyframes spinSlow{
+
+    from{
+        transform:rotate(0deg);
+    }
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+@keyframes float{
+
+    0%,100%{
+        transform:translateY(0px);
+    }
+
+    50%{
+        transform:translateY(-18px);
+    }
+
+}
+
+@keyframes pulse{
+
+    0%,100%{
+        transform:scale(1);
+        opacity:.7;
+    }
+
+    50%{
+        transform:scale(1.18);
+        opacity:1;
+    }
+
+}
+
+@keyframes lightSweep{
+
+    0%{
+        transform:translateX(-250%) rotate(25deg);
+    }
+
+    100%{
+        transform:translateX(650%) rotate(25deg);
+    }
+
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+.glass-orb{
+    width:320px;
+    height:320px;
+}
+
+.rotate-ring{
+    width:300px;
+    height:300px;
+}
+
+.ring2{
+    width:270px;
+    height:270px;
+}
+
+.glass-card{
+    width:230px;
+    height:230px;
+}
+
+}
+
+/* ============================= */
+/* Premium Image Switching Effect */
+/* ============================= */
+
+.image-switch-enter-active,
+.image-switch-leave-active{
+    transition:
+        transform .9s cubic-bezier(.19,1,.22,1),
+        opacity .9s ease,
+        filter .9s ease;
+}
+
+/* New Image */
+
+.image-switch-enter-from{
+    opacity:0;
+
+    transform:
+        perspective(1200px)
+        rotateY(-45deg)
+        rotateX(10deg)
+        scale(.8);
+
+    filter:
+        blur(18px)
+        brightness(1.6)
+        saturate(1.8);
+}
+
+.image-switch-enter-to{
+    opacity:1;
+
+    transform:
+        perspective(1200px)
+        rotateY(0)
+        rotateX(0)
+        scale(1);
+
+    filter:
+        blur(0)
+        brightness(1)
+        saturate(1);
+}
+
+/* Leaving Image */
+
+.image-switch-leave-from{
+    opacity:1;
+    transform:scale(1);
+    filter:blur(0);
+}
+
+.image-switch-leave-to{
+
+    opacity:0;
+
+    transform:
+        perspective(1200px)
+        rotateY(45deg)
+        rotateX(-10deg)
+        scale(1.2);
+
+    filter:
+        blur(20px)
+        brightness(2);
+}
+
+
+@media(max-width:768px){
+  .image-frame{
+    width:270px;
+    height:270px;
+  }
+}
+
+@media(max-width:480px){
+  .image-frame{
+    width:220px;
+    height:220px;
+  }
+}
 @media (max-width: 720px) {
   .buttons {
     display: flex;
