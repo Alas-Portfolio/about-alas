@@ -246,40 +246,106 @@ export default {
   methods: {
 
        startDrag(e) {
-                if (this.zoom <= 1) return;
+        if (this.zoom <= 1) return;
+
+        if (e.type === "touchstart") {
+
+            if (e.touches.length === 1) {
 
                 this.dragging = true;
 
                 this.dragStart = {
-                x: e.clientX,
-                y: e.clientY
+                    x: e.touches[0].clientX,
+                    y: e.touches[0].clientY
                 };
 
-                window.addEventListener("mousemove", this.dragImage);
-                window.addEventListener("mouseup", this.stopDrag);
-            },
+            } else if (e.touches.length === 2) {
 
-            dragImage(e) {
-                if (!this.dragging) return;
+                this.lastPinchDistance = this.getPinchDistance(e);
 
-                const dx = e.clientX - this.dragStart.x;
-                const dy = e.clientY - this.dragStart.y;
+            }
 
-                this.position.x += dx;
-                this.position.y += dy;
+        } else {
 
-                this.dragStart = {
+            this.dragging = true;
+
+            this.dragStart = {
                 x: e.clientX,
                 y: e.clientY
-                };
-            },
+            };
 
-            stopDrag() {
-                this.dragging = false;
+            window.addEventListener("mousemove", this.dragImage);
+            window.addEventListener("mouseup", this.stopDrag);
 
-                window.removeEventListener("mousemove", this.dragImage);
-                window.removeEventListener("mouseup", this.stopDrag);
-        },
+        }
+    },
+
+    dragImage(e) {
+
+        if (e.type === "touchmove") {
+
+            if (e.touches.length === 2) {
+
+                const distance = this.getPinchDistance(e);
+
+                if (this.lastPinchDistance) {
+
+                    const diff = (distance - this.lastPinchDistance) * 0.005;
+
+                    this.zoom += diff;
+
+                    if (this.zoom < 1)
+                        this.zoom = 1;
+
+                    if (this.zoom > 3)
+                        this.zoom = 3;
+                }
+
+                this.lastPinchDistance = distance;
+
+                return;
+            }
+
+            if (!this.dragging || this.zoom <= 1) return;
+
+            const touch = e.touches[0];
+
+            const dx = touch.clientX - this.dragStart.x;
+            const dy = touch.clientY - this.dragStart.y;
+
+            this.position.x += dx;
+            this.position.y += dy;
+
+            this.dragStart = {
+                x: touch.clientX,
+                y: touch.clientY
+            };
+
+            return;
+        }
+
+        if (!this.dragging || this.zoom <= 1) return;
+
+        const dx = e.clientX - this.dragStart.x;
+        const dy = e.clientY - this.dragStart.y;
+
+        this.position.x += dx;
+        this.position.y += dy;
+
+        this.dragStart = {
+            x: e.clientX,
+            y: e.clientY
+        };
+    },
+
+    stopDrag() {
+
+        this.dragging = false;
+        this.lastPinchDistance = 0;
+
+        window.removeEventListener("mousemove", this.dragImage);
+        window.removeEventListener("mouseup", this.stopDrag);
+    },
           
             beforeUnmount() {
             window.removeEventListener("mousemove", this.dragImage);
@@ -583,9 +649,6 @@ export default {
   color:white;
 
 }
-
-
-
 
 
 .card-content p {

@@ -489,7 +489,10 @@ object-fit:cover;
 
 
 
+
 .carousel-overlay{
+display: grid;
+justify-content: center;  
 
 position:absolute;
 
