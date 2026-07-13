@@ -30,9 +30,6 @@
           <i class="bi bi-file-earmark-pdf me-2"></i> View Resume
         </button>
 
-        <button class="btn enhanced-btn btn-secondary ripple" @click="clickCV">
-          <i class="bi bi-file-earmark-person me-2"></i> View Curriculum Vitae
-        </button>
       </div>
 
     </div>
@@ -83,10 +80,6 @@ export default {
   methods: {
     clickResume() {
       window.open('/pdf/RESUME-FERRER,ALASTAIR.pdf', '_blank');
-    },
-
-    clickCV() {
-      window.open('/pdf/CV-FERRER,ALASTAIR.pdf', '_blank');
     },
 
     startTyping() {
