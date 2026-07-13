@@ -202,7 +202,9 @@ export default {
         y: 0
         },
 
-        posters: images.keys().map((file, index) => ({
+        posters: images.keys()
+    .sort((a, b) => b.localeCompare(a)) // newest → oldest
+    .map((file, index) => ({
 
         title:
             `Graphic Design Project ${index + 1}`,
