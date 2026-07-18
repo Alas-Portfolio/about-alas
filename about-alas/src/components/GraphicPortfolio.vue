@@ -1,1083 +1,577 @@
 <template>
   <section class="graphic-section">
-
-    <h2 class="section-title">
-      🎨 Graphic Design Portfolio
-    </h2>
-
-
     <div class="gallery">
-
-     <div
+      <div
         class="graphic-card"
         v-for="(poster, index) in visiblePosters"
         :key="index"
-        >
-
-
-        <div class="poster-wrapper">
-
-            <img
+      >
+        <div class="poster-wrapper" @click="openModal(index)">
+          <img
             :src="poster.img"
             :alt="poster.title"
             class="poster-image"
-            />
-
+            loading="lazy"
+          />
+          <div class="zoom-overlay">
+            <svg class="zoom-icon" viewBox="0 0 24 24" fill="white">
+              <circle cx="11" cy="11" r="8" stroke="white" stroke-width="2" fill="none"/>
+              <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="white" stroke-width="2"/>
+              <line x1="11" y1="7" x2="11" y2="15" stroke="white" stroke-width="2"/>
+              <line x1="7" y1="11" x2="15" y2="11" stroke="white" stroke-width="2"/>
+            </svg>
+          </div>
         </div>
-
-
-
-        <div class="card-content">
-
-
-            <h3>
-            {{ poster.title }}
-            </h3>
-
-
-            <p>
-            {{ poster.description }}
-            </p>
-
-
-
-            <button
-            class="view-button"
-            @click="openModal(index)"
-            >
-            View Design
-            </button>
-
-
-        </div>
-
-
-        </div>
-
+      </div>
     </div>
-
-
 
     <button
       v-if="displayLimit < posters.length"
       class="load-more"
       @click="loadMore"
     >
-      View More Posters
+      View More
     </button>
 
+    <!-- Modal for Zoomable Image -->
+    <div v-if="showModal" class="modal" @click.self="closeModal">
+      <button class="close-button" @click="closeModal">✕</button>
 
-
-
-
-    <div
-      v-if="showModal"
-      class="modal"
-    >
-
-      <button
-        class="close-button"
-        @click="closeModal"
+      <div 
+        class="viewer"
+        @touchstart="handleTouchStart"
+        @touchmove="handleTouchMove"
+        @touchend="handleTouchEnd"
+        @mousedown="startDrag"
+        @mousemove="dragImage"
+        @mouseup="stopDrag"
+        @mouseleave="stopDrag"
+        @wheel="handleWheel"
       >
-        ✕
-      </button>
+        <img
+          :src="selectedImage.img"
+          :alt="selectedImage.title"
+          class="preview-image"
+          :style="{
+            transform: `translate(${position.x}px, ${position.y}px) scale(${zoom})`,
+            cursor: zoom > 1 ? 'grab' : 'default',
+            transition: isDragging ? 'none' : 'transform 0.3s ease'
+          }"
+          draggable="false"
+        />
+      </div>
 
-
-
-      <button
-        class="nav-button prev"
-        @click="previousImage"
-      >
-        ❮
-      </button>
-
-
-
-            <div
-                class="viewer"
-                @mousedown="startDrag"
-                @mouseup="stopDrag"
-                >
-
-
-            <img
-                :src="selectedImage.img"
-                class="preview-image"
-                :style="{
-                transform:
-                `translate(${position.x}px, ${position.y}px) scale(${zoom})`
-                }"
-            />
-
-
-            </div>
-
-
-
-      <button
-        class="nav-button next"
-        @click="nextImage"
-      >
-        ❯
-      </button>
-
-
-
-     <div class="zoom-controls">
-        <button @click="zoomOut">
-            −
-        </button>
-
-
-        <span>
-            {{ Math.round(zoom * 100) }}%
-        </span>
-
-
-        <button @click="zoomIn">
-            +
-        </button>
-
-
-        <button
-            class="reset-button"
-            @click="resetImage"
-        >
-            Reset
-        </button>
-
-        </div>
-
-
+      <div class="zoom-controls">
+        <button @click="zoomOut" class="zoom-btn">−</button>
+        <span class="zoom-level">{{ Math.round(zoom * 100) }}%</span>
+        <button @click="zoomIn" class="zoom-btn">+</button>
+        <button class="reset-button" @click="resetImage">Reset</button>
+      </div>
     </div>
-
-
   </section>
 </template>
 
-
-
-
 <script>
-
 const images = require.context(
   "../images/graphic projects",
   false,
   /\.(png|jpe?g|svg)$/i
 );
 
-
 export default {
-
   name: "GraphicPortfolio",
-        
 
-    data() {
-
+  data() {
     return {
-
-        displayLimit: 12,
-
-        loadAmount: 12,
-
-        showModal: false,
-
-        selectedIndex: 0,
-
-
-        zoom: 1,
-
-
-        position: {
-        x: 0,
-        y: 0
-        },
-
-
-        dragging: false,
-
-
-        dragStart: {
-        x: 0,
-        y: 0
-        },
-
-        posters: images.keys()
-    .sort((a, b) => b.localeCompare(a)) // newest → oldest
-    .map((file, index) => ({
-
-        title:
-            `Graphic Design Project ${index + 1}`,
-
-
-        description:
-            "Professional poster artwork focusing on branding, typography, composition, color harmony, marketing visuals, and digital presentation.",
-
-
-        img:
-            images(file)
-
-        }))
-
+      displayLimit: 12,
+      loadAmount: 12,
+      showModal: false,
+      selectedIndex: 0,
+      zoom: 1,
+      position: { x: 0, y: 0 },
+      isDragging: false,
+      dragStart: { x: 0, y: 0 },
+      imageStartPos: { x: 0, y: 0 },
+      lastPinchDistance: 0,
+      initialZoom: 1,
+      posters: []
     };
-
-    },
-
-  computed: {
-
-    visiblePosters() {
-
-      return this.posters.slice(
-        0,
-        this.displayLimit
-      );
-
-    },
-
-
-    selectedImage() {
-
-      return this.posters[this.selectedIndex];
-
-    }
-
   },
 
+  computed: {
+    visiblePosters() {
+      return this.posters.slice(0, this.displayLimit);
+    },
+    selectedImage() {
+      return this.posters[this.selectedIndex] || this.posters[0];
+    }
+  },
 
+  created() {
+    this.loadPosters();
+  },
 
   methods: {
+    loadPosters() {
+      this.posters = images.keys()
+        .sort((a, b) => b.localeCompare(a))
+        .map((file) => ({
+          title: this.getTitleFromFilename(file),
+          img: images(file)
+        }));
+    },
 
-       startDrag(e) {
-        if (this.zoom <= 1) return;
+    getTitleFromFilename(file) {
+      const name = file.replace(/^\.\//, '').replace(/\.[^/.]+$/, '');
+      return name
+        .replace(/[-_]/g, ' ')
+        .replace(/(^\w|\s\w)/g, m => m.toUpperCase());
+    },
 
-        if (e.type === "touchstart") {
+    // ===== ZOOM METHODS =====
+    zoomIn() {
+      if (this.zoom < 3) {
+        this.zoom = Math.min(3, this.zoom + 0.25);
+      }
+    },
 
-            if (e.touches.length === 1) {
+    zoomOut() {
+      if (this.zoom > 0.5) {
+        this.zoom = Math.max(0.5, this.zoom - 0.25);
+      }
+    },
 
-                this.dragging = true;
+    resetImage() {
+      this.zoom = 1;
+      this.position = { x: 0, y: 0 };
+      this.isDragging = false;
+    },
 
-                this.dragStart = {
-                    x: e.touches[0].clientX,
-                    y: e.touches[0].clientY
-                };
-
-            } else if (e.touches.length === 2) {
-
-                this.lastPinchDistance = this.getPinchDistance(e);
-
-            }
-
-        } else {
-
-            this.dragging = true;
-
-            this.dragStart = {
-                x: e.clientX,
-                y: e.clientY
-            };
-
-            window.addEventListener("mousemove", this.dragImage);
-            window.addEventListener("mouseup", this.stopDrag);
-
-        }
+    // ===== MOUSE DRAG =====
+    startDrag(e) {
+      if (this.zoom <= 1) return;
+      e.preventDefault();
+      this.isDragging = true;
+      this.dragStart = { x: e.clientX, y: e.clientY };
+      this.imageStartPos = { ...this.position };
     },
 
     dragImage(e) {
-
-        if (e.type === "touchmove") {
-
-            if (e.touches.length === 2) {
-
-                const distance = this.getPinchDistance(e);
-
-                if (this.lastPinchDistance) {
-
-                    const diff = (distance - this.lastPinchDistance) * 0.005;
-
-                    this.zoom += diff;
-
-                    if (this.zoom < 1)
-                        this.zoom = 1;
-
-                    if (this.zoom > 3)
-                        this.zoom = 3;
-                }
-
-                this.lastPinchDistance = distance;
-
-                return;
-            }
-
-            if (!this.dragging || this.zoom <= 1) return;
-
-            const touch = e.touches[0];
-
-            const dx = touch.clientX - this.dragStart.x;
-            const dy = touch.clientY - this.dragStart.y;
-
-            this.position.x += dx;
-            this.position.y += dy;
-
-            this.dragStart = {
-                x: touch.clientX,
-                y: touch.clientY
-            };
-
-            return;
-        }
-
-        if (!this.dragging || this.zoom <= 1) return;
-
-        const dx = e.clientX - this.dragStart.x;
-        const dy = e.clientY - this.dragStart.y;
-
-        this.position.x += dx;
-        this.position.y += dy;
-
-        this.dragStart = {
-            x: e.clientX,
-            y: e.clientY
-        };
+      if (!this.isDragging || this.zoom <= 1) return;
+      e.preventDefault();
+      
+      const dx = (e.clientX - this.dragStart.x);
+      const dy = (e.clientY - this.dragStart.y);
+      
+      this.position.x = this.imageStartPos.x + dx;
+      this.position.y = this.imageStartPos.y + dy;
     },
 
     stopDrag() {
-
-        this.dragging = false;
-        this.lastPinchDistance = 0;
-
-        window.removeEventListener("mousemove", this.dragImage);
-        window.removeEventListener("mouseup", this.stopDrag);
+      this.isDragging = false;
     },
-          
-            beforeUnmount() {
-            window.removeEventListener("mousemove", this.dragImage);
-            window.removeEventListener("mouseup", this.stopDrag);
-    
-        },
 
-        resetImage() {
-        this.zoom = 1;
+    // ===== TOUCH HANDLING =====
+    handleTouchStart(e) {
+      const touches = e.touches;
+      
+      if (touches.length === 1) {
+        if (this.zoom > 1) {
+          this.isDragging = true;
+          this.dragStart = { x: touches[0].clientX, y: touches[0].clientY };
+          this.imageStartPos = { ...this.position };
+        }
+      } else if (touches.length === 2) {
+        this.lastPinchDistance = this.getPinchDistance(touches);
+        this.initialZoom = this.zoom;
+      }
+    },
 
-        this.position = {
-            x: 0,
-            y: 0
-        };
+    handleTouchMove(e) {
+      e.preventDefault();
+      const touches = e.touches;
+      
+      if (touches.length === 1 && this.isDragging) {
+        const dx = touches[0].clientX - this.dragStart.x;
+        const dy = touches[0].clientY - this.dragStart.y;
+        this.position.x = this.imageStartPos.x + dx;
+        this.position.y = this.imageStartPos.y + dy;
+      } else if (touches.length === 2) {
+        const distance = this.getPinchDistance(touches);
+        if (this.lastPinchDistance > 0) {
+          const scale = distance / this.lastPinchDistance;
+          this.zoom = Math.min(3, Math.max(0.5, this.initialZoom * scale));
+        }
+      }
+    },
 
-        this.dragging = false;
-        },
+    handleTouchEnd() {
+      this.isDragging = false;
+      this.lastPinchDistance = 0;
+    },
 
+    getPinchDistance(touches) {
+      const dx = touches[0].clientX - touches[1].clientX;
+      const dy = touches[0].clientY - touches[1].clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    },
+
+    handleWheel(e) {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? -0.1 : 0.1;
+      this.zoom = Math.min(3, Math.max(0.5, this.zoom + delta));
+    },
+
+    // ===== NAVIGATION =====
     loadMore() {
-
       this.displayLimit += this.loadAmount;
-
     },
-
-
 
     openModal(index) {
-
-      this.selectedIndex = index;
-
-      this.showModal = true;
-
-      this.zoom = 1;
-
+      if (index >= 0 && index < this.posters.length) {
+        this.selectedIndex = index;
+        this.showModal = true;
+        this.zoom = 1;
+        this.position = { x: 0, y: 0 };
+        this.isDragging = false;
+        document.body.style.overflow = 'hidden';
+      }
     },
-
-
 
     closeModal() {
-
       this.showModal = false;
-
-    },
-
-
-
-    nextImage() {
-
-      this.selectedIndex =
-        (
-          this.selectedIndex + 1
-        )
-        %
-        this.posters.length;
-
-
       this.zoom = 1;
-
-    },
-
-
-
-    previousImage() {
-
-      this.selectedIndex =
-        (
-          this.selectedIndex - 1 +
-          this.posters.length
-        )
-        %
-        this.posters.length;
-
-
-      this.zoom = 1;
-
-    },
-
-
-
-    zoomIn() {
-
-      if (this.zoom < 3) {
-
-        this.zoom += 0.25;
-
-      }
-
-    },
-
-
-
-    zoomOut() {
-
-      if (this.zoom > 0.5) {
-
-        this.zoom -= 0.25;
-
-      }
-
+      this.position = { x: 0, y: 0 };
+      this.isDragging = false;
+      document.body.style.overflow = 'auto';
     }
-
-
   },
 
-
-      posters: images.keys().map((file, index) => ({
-
-        title:
-          `Graphic Design Project ${index + 1}`,
-
-
-        description:
-          "Professional poster artwork focusing on branding, typography, composition, color harmony, marketing visuals, and digital presentation.",
-
-
-        img:
-          images(file)
-
-      }))
-
-    };
-
-
-
+  beforeUnmount() {
+    document.body.style.overflow = 'auto';
+  }
+};
 </script>
 
-
-
-
 <style scoped>
-
-@import url(
-  'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap'
-);
-
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
 * {
-
-  font-family:
-    Montserrat,
-    sans-serif;
-
+  font-family: Montserrat, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-
-
 
 .graphic-section {
-
   max-width: 1200px;
-
   margin: auto;
-
-  padding: 60px 20px;
-
+  padding: 40px 20px;
 }
-
-
-
-.section-title {
-
-  text-align: center;
-
-  font-size: 2.2rem;
-
-  color: white;
-
-  margin-bottom: 40px;
-
-}
-
-
 
 .gallery {
-
   display: grid;
-
-  grid-template-columns:
-    repeat(auto-fit, minmax(260px, 1fr));
-
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 30px;
-
 }
-
 
 .graphic-card {
-
-  display:flex;
-
-  flex-direction:column;
-
-  background:
-  rgba(255,255,255,.08);
-
-  border:
-  1px solid rgba(255,255,255,.15);
-
-  backdrop-filter:
-  blur(20px);
-
-  border-radius:25px;
-
-  overflow:hidden;
-
-  min-height:520px;
-
-  box-shadow:
-  0 20px 50px rgba(0,0,0,.45);
-
-  transition:.4s;
-
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border-radius: 25px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+  transition: 0.4s;
 }
-
-
 
 .graphic-card:hover {
-
-  transform:
-  translateY(-10px);
-
+  transform: translateY(-10px);
 }
-
-
-
 
 .poster-wrapper {
-
-  width:100%;
-
-  height:330px;
-
-  overflow:hidden;
-
-  background:#111;
-
-}
-
-
-
-
-
-.poster-image {
-
-  width:100%;
-
-  height:100%;
-
-  object-fit:cover;
-
-  display:block;
-
-  transition:.5s;
-
-}
-
-
-
-
-
-.graphic-card:hover .poster-image {
-
-  transform:
-  scale(1.05);
-
-}
-
-
-
-
-
-.card-content {
-
-  padding:25px;
-
-  color:white;
-
-  background:
-  linear-gradient(
-  135deg,
-  rgba(255,255,255,.15),
-  rgba(255,255,255,.05)
-  );
-
-  backdrop-filter:
-  blur(15px);
-
-  flex:1;
-
-}
-
-
-
-
-
-.card-content h3 {
-
-  font-size:1.2rem;
-
-  margin-bottom:12px;
-
-  color:white;
-
-}
-
-
-.card-content p {
-
-  font-size:.9rem;
-
-  line-height:1.6;
-
-  color:#ddd;
-
-  margin-bottom:20px;
-
-}
-
-
-
-
-
-.view-button {
-
-  width:100%;
-
-  padding:13px;
-
-  border:none;
-
-  border-radius:30px;
-
-  background:
-
-  linear-gradient(
-  45deg,
-  #9b0d54,
-  #ff4d94
-  );
-
-  color:white;
-
-  font-weight:bold;
-
-  cursor:pointer;
-
-}
-
-
-
-.poster-image {
-
+  position: relative;
   width: 100%;
-
-  height: 100%;
-
-  object-fit: cover;
-
-  transition: .5s;
-
-}
-
-
-
-.graphic-card:hover .poster-image {
-
-  transform:
-    scale(1.08);
-
-}
-
-
-
-.card-content {
-
-  position: absolute;
-
-  bottom: 0;
-
-  left: 0;
-
-  right: 0;
-
-  padding: 25px;
-
-  color: white;
-
-  background:
-    linear-gradient(
-      to top,
-      rgba(0,0,0,.95),
-      rgba(0,0,0,.55),
-      transparent
-    );
-
-}
-
-
-
-.card-content h3 {
-
-  font-size: 1.2rem;
-
-  margin-bottom: 10px;
-
-}
-
-
-
-.card-content p {
-
-  font-size: .9rem;
-
-  line-height: 1.5;
-
-  color: #eee;
-
-  margin-bottom: 15px;
-
-  display: -webkit-box;
-
-  -webkit-line-clamp: 3;
-
-  -webkit-box-orient: vertical;
-
+  height: 400px;
   overflow: hidden;
-
-}
-
-
-
-.view-button {
-
-  width: 100%;
-
-  padding: 12px;
-
-  border: none;
-
-  border-radius: 30px;
-
-  background:
-    linear-gradient(
-      45deg,
-      #9b0d54,
-      #ff4d94
-    );
-
-  color: white;
-
-  font-weight: bold;
-
+  background: #111;
   cursor: pointer;
-
 }
 
+.poster-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: 0.5s;
+}
 
+.graphic-card:hover .poster-image {
+  transform: scale(1.05);
+}
+
+.zoom-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: 0.3s;
+  pointer-events: none;
+}
+
+.poster-wrapper:hover .zoom-overlay {
+  opacity: 1;
+}
+
+.zoom-icon {
+  width: 48px;
+  height: 48px;
+  filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+}
 
 .load-more {
-
   display: block;
-
   margin: 40px auto 0;
-
   padding: 14px 35px;
-
   border: none;
-
   border-radius: 30px;
-
-  background:
-    linear-gradient(
-      45deg,
-      #9b0d54,
-      #ff4d94
-    );
-
+  background: linear-gradient(45deg, #9b0d54, #ff4d94);
   color: white;
-
   font-weight: bold;
-
   cursor: pointer;
-
+  transition: 0.3s;
 }
 
+.load-more:hover {
+  transform: scale(1.02);
+  box-shadow: 0 5px 20px rgba(155, 13, 84, 0.4);
+}
 
-
+/* ===== MODAL ===== */
 .modal {
-
   position: fixed;
-
   inset: 0;
-
-  background:
-    rgba(0,0,0,.95);
-
+  background: rgba(0, 0, 0, 0.92);
   display: flex;
-
   justify-content: center;
-
   align-items: center;
-
-  z-index: 9999;
-
+  z-index: 1000;
 }
-
-
 
 .viewer {
-
-  max-width: 90%;
-
-  max-height: 85%;
-
+  max-width: 90vw;
+  max-height: 85vh;
   overflow: hidden;
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+  cursor: grab;
+  position: relative;
 }
 
-
+.viewer:active {
+  cursor: grabbing;
+}
 
 .preview-image {
-
-  max-width: 100%;
-
+  max-width: 90vw;
   max-height: 85vh;
-
-  border-radius: 20px;
-
-  transition: .3s;
-
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  -webkit-user-drag: none;
 }
 
-
-
-.close-button,
-.nav-button {
-
-  position: absolute;
-
-  background: #9b0d54;
-
-  color: white;
-
-  border: none;
-
-  width: 50px;
-
-  height: 50px;
-
-  border-radius: 50%;
-
-  cursor: pointer;
-
-  font-size: 25px;
-
-}
-
-
-
+/* ===== MODAL CONTROLS ===== */
 .close-button {
-
+  position: fixed;
   top: 30px;
-
   right: 40px;
-
+  background: rgba(155, 13, 84, 0.9);
+  color: white;
+  border: none;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+  backdrop-filter: blur(10px);
 }
 
-
-
-.prev {
-
-  left: 40px;
-
+.close-button:hover {
+  transform: scale(1.1);
+  background: #ff4d94;
 }
-
-
-
-.next {
-
-  right: 40px;
-
-}
-
-
 
 .zoom-controls {
-
-  position: absolute;
-
+  position: fixed;
   bottom: 30px;
-
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-
   align-items: center;
-
-  gap: 15px;
-
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 10px 20px;
+  border-radius: 30px;
+  backdrop-filter: blur(10px);
+  z-index: 1001;
 }
-
-
 
 .zoom-controls button {
-
-  width: 45px;
-
-  height: 45px;
-
+  width: 40px;
+  height: 40px;
   border: none;
-
   border-radius: 50%;
-
   cursor: pointer;
-
-}
-
-
-
-.zoom-controls span {
-
+  background: rgba(255, 255, 255, 0.15);
   color: white;
-
+  font-size: 20px;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-@media(max-width:768px){
+.zoom-controls button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
 
+.zoom-level {
+  color: white;
+  font-size: 14px;
+  min-width: 50px;
+  text-align: center;
+}
 
+.reset-button {
+  background: #9b0d54 !important;
+  padding: 0 16px !important;
+  border-radius: 20px !important;
+  width: auto !important;
+  font-size: 14px !important;
+}
+
+.reset-button:hover {
+  background: #ff4d94 !important;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
   .poster-wrapper {
-
-    height:280px;
-
-  }
-
-
-  .graphic-card {
-
-    min-height:480px;
-
-  }
-
-
-}
-
-
-
-@media(max-width:480px){
-
-
-  .poster-wrapper {
-
-    height:420px;
-
-  }
-
-
-  .card-content p {
-
-    font-size:.85rem;
-
-  }
-
-
-}
-
-@media(max-width:768px) {
-
-  .gallery {
-
-    grid-template-columns:
-      repeat(2,1fr);
-
-  }
-
-
-  .graphic-card {
-
     height: 300px;
-
   }
-
-}
-
-
-
-@media(max-width:480px) {
-
   .gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .close-button {
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+  .zoom-controls {
+    bottom: 20px;
+    padding: 8px 15px;
+    gap: 10px;
+  }
+  .zoom-controls button {
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+  }
+  .viewer {
+    max-width: 95vw;
+    max-height: 70vh;
+  }
+  .preview-image {
+    max-width: 95vw;
+    max-height: 70vh;
+  }
+}
 
+@media (max-width: 480px) {
+  .poster-wrapper {
+    height: 400px;
+  }
+  .gallery {
     grid-template-columns: 1fr;
-
   }
-
-
-  .graphic-card {
-
-    height: 340px;
-
+  .graphic-section {
+    padding: 20px 10px;
   }
-
-
-  .section-title {
-
-    font-size: 1.6rem;
-
+  .close-button {
+    top: 15px;
+    right: 15px;
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
   }
-
+  .zoom-controls {
+    bottom: 15px;
+    padding: 6px 12px;
+    gap: 8px;
+  }
+  .zoom-controls button {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+  .zoom-level {
+    font-size: 12px;
+    min-width: 40px;
+  }
+  .reset-button {
+    font-size: 12px !important;
+    padding: 0 12px !important;
+  }
+  .viewer {
+    max-width: 98vw;
+    max-height: 60vh;
+  }
+  .preview-image {
+    max-width: 98vw;
+    max-height: 60vh;
+  }
 }
 
-
-
-@media(max-width:320px) {
-
-  .graphic-card {
-
-    height: 280px;
-
+@media (max-width: 320px) {
+  .poster-wrapper {
+    height: 320px;
   }
-
-
-  .card-content {
-
-    padding: 15px;
-
+  .viewer {
+    max-height: 50vh;
   }
-
-
-  .card-content p {
-
-    -webkit-line-clamp: 2;
-
+  .preview-image {
+    max-height: 50vh;
   }
-
+  .zoom-controls {
+    gap: 5px;
+    padding: 5px 10px;
+  }
+  .zoom-controls button {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
 }
-
 </style>
