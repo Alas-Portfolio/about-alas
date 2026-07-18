@@ -34,7 +34,7 @@
 
   <section class="all-projects">
     <div class="container">
-      <h2 class="section-title">💻 Web Development/ Web Design Projects</h2>
+      <h2 class="section-title">💻 Web Development/ Web Design Projects/ Graphic Design/ Video Editing</h2>
 
       <div class="projects-grid">
         <div
