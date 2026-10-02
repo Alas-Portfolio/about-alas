@@ -130,19 +130,19 @@ export default {
           title: "FrameCraters",
           description: "High fidelity Figma website design created during internship.",
           img: require("../images/framecraters.png"),
-          url: "https://www.figma.com/"
+          url: "https://www.figma.com/proto/ff1AAkN5jQ01AOXu3KiPrt/FERRER---Task-5--Creating-a-Full-Website-UI--Multi-Page-?node-id=93-166&t=S51fKWDv6ecPeApS-1"
         },
         {
           title: "Krezil Food Stall",
           description: "Business website UI design focused on branding and customer experience.",
           img: require("../images/KREZIL-FOOD-STALL.jpg"),
-          url: "https://www.figma.com/"
+          url: https://www.figma.com/proto/QtPv9S2a8rMVlnodk6Aedq/KREZIL-FOOD-STALL?t=gvIC5Ohp4EbY2220-1&scaling=contain&content-scaling=fixed&page-id=0%3A1&node-id=21-220"
         },
         {
           title: "Matcha Ka",
           description: "Modern website interface design with interactive prototype experience.",
           img: require("../images/matcha-ka.png"),
-          url: "https://www.figma.com/"
+          url: "https://www.figma.com/proto/uevfKzT76hKgfQQu1FzGjW/FERRER---WEB-DESIGN--PROJECT-1-?node-id=7-119"
         }
       ]
     };
