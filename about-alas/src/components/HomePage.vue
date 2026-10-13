@@ -77,7 +77,8 @@ export default {
 
   methods: {
     clickResume() {
-      window.open('/pdf/RESUME-FERRER,ALASTAIR.pdf', '_blank');
+     const pdfUrl = '/pdf/RESUME-FERRER,ALASTAIR.pdf';
+     window.open(pdfUrl, '_blank', 'noopener,noreferrer');
     },
 
     handleImageError(event) {
