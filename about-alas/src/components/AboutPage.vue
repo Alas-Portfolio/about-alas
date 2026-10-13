@@ -136,7 +136,7 @@ export default {
           title: "Krezil Food Stall",
           description: "Business website UI design focused on branding and customer experience.",
           img: require("../images/KREZIL-FOOD-STALL.jpg"),
-          url: https://www.figma.com/proto/QtPv9S2a8rMVlnodk6Aedq/KREZIL-FOOD-STALL?t=gvIC5Ohp4EbY2220-1&scaling=contain&content-scaling=fixed&page-id=0%3A1&node-id=21-220"
+          url: "https://www.figma.com/proto/QtPv9S2a8rMVlnodk6Aedq/KREZIL-FOOD-STALL?t=gvIC5Ohp4EbY2220-1&scaling=contain&content-scaling=fixed&page-id=0%3A1&node-id=21-220"
         },
         {
           title: "Matcha Ka",
