@@ -117,7 +117,7 @@ export default {
         {
           title: "Kuda Electric Vehicle",
           description: "Porfolion Showcase that allows to view and speculate the specifications of Kuda Units as well as the pricings.",
-          img: require("../images/Kuda Electric Vehicle.jpeg"),
+          img: require("../images/KudaElectricVehicle.jpeg"),
           url: "https://kudaebike.onrender.com"
         },
         {
