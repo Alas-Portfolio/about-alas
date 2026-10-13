@@ -115,6 +115,12 @@ export default {
 
       projects: [
         {
+          title: "Kuda Electric Vehicle",
+          description: "Porfolion Showcase that allows to view and speculate the specifications of Kuda Units as well as the pricings.",
+          img: require("../images/Kuda Electric Vehicle.jpeg"),
+          url: "https://kudaebike.onrender.com"
+        },
+        {
           title: "Faculty Submittals Monitoring System",
           description: "Capstone web application that allows faculty members to submit requirements and monitor progress.",
           img: require("../images/faculty-submittals.png"),
